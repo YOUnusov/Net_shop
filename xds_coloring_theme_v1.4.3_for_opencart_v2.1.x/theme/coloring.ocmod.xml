@@ -1,0 +1,1438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Coloring Theme Modification</name>
+	<code>coloring</code>
+  <version>1.4.3</version>
+  <author>xds</author>
+  <link>http://xds.by/</link>
+
+	<file path="catalog/controller/common/home.php">
+		<operation>
+      <search><![CDATA[
+				$data['header'] = $this->load->controller('common/header');
+      ]]></search>
+      <add position="before"><![CDATA[
+
+				$this->load->model('setting/setting');
+			
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				$this->load->model('extension/module');
+				
+				$new_modules = array();
+				$data['new_modules_1'] = array();
+				$data['new_modules_2'] = array();
+				$data['new_modules_3'] = array();
+				$data['new_modules_4'] = array();
+				$data['new_modules_5'] = array();
+				
+				
+				if (isset($xds_coloring_theme['new_home_layout_module'])) {
+					$new_modules = $xds_coloring_theme['new_home_layout_module'];
+				}
+				
+				foreach ($new_modules as $new_module) {
+				
+					if ($new_module['position'] == 'position_1') {
+						$part = explode('.', $new_module['code']);
+						if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+							$data['new_modules_1'][] = array(
+								'module'     => $this->load->controller('module/' . $part[0]),
+								'sort_order' => $new_module['sort_order']
+							);
+						}
+						if (isset($part[1])) {
+							$setting_info = $this->model_extension_module->getModule($part[1]);
+							if ($setting_info && $setting_info['status']) {
+								$data['new_modules_1'][] = array(
+									'module'     => $this->load->controller('module/' . $part[0], $setting_info),
+									'sort_order' => $new_module['sort_order']
+								);
+							}
+						}
+					} elseif ($new_module['position'] == 'position_2') {
+						$part = explode('.', $new_module['code']);
+						if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+							$data['new_modules_2'][] = array(
+								'module'     => $this->load->controller('module/' . $part[0]),
+								'sort_order' => $new_module['sort_order']
+							);
+						}
+						if (isset($part[1])) {
+							$setting_info = $this->model_extension_module->getModule($part[1]);
+							if ($setting_info && $setting_info['status']) {
+								$data['new_modules_2'][] = array(
+									'module'     => $this->load->controller('module/' . $part[0], $setting_info),
+									'sort_order' => $new_module['sort_order']
+								);
+							}
+						}
+					} elseif ($new_module['position'] == 'position_3') {
+						$part = explode('.', $new_module['code']);
+						if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+							$data['new_modules_3'][] = array(
+								'module'     => $this->load->controller('module/' . $part[0]),
+								'sort_order' => $new_module['sort_order']
+							);
+
+						}
+						if (isset($part[1])) {
+							$setting_info = $this->model_extension_module->getModule($part[1]);
+							if ($setting_info && $setting_info['status']) {
+								$data['new_modules_3'][] = array(
+									'module'     => $this->load->controller('module/' . $part[0], $setting_info),
+									'sort_order' => $new_module['sort_order']
+								);
+
+							}
+						}
+					} elseif($new_module['position'] == 'position_4') {
+						$part = explode('.', $new_module['code']);
+						if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+							$data['new_modules_4'][] = array(
+								'module'     => $this->load->controller('module/' . $part[0]),
+								'sort_order' => $new_module['sort_order']
+							);
+
+						}
+						if (isset($part[1])) {
+							$setting_info = $this->model_extension_module->getModule($part[1]);
+							if ($setting_info && $setting_info['status']) {
+								$data['new_modules_4'][] = array(
+									'module'     => $this->load->controller('module/' . $part[0], $setting_info),
+									'sort_order' => $new_module['sort_order']
+								);
+
+							}
+						}
+					} else {
+						$part = explode('.', $new_module['code']);
+						if (isset($part[0]) && $this->config->get($part[0] . '_status')) {
+							$data['new_modules_5'][] = array(
+								'module'     => $this->load->controller('module/' . $part[0]),
+								'sort_order' => $new_module['sort_order']
+							);
+
+						}
+						if (isset($part[1])) {
+							$setting_info = $this->model_extension_module->getModule($part[1]);
+							if ($setting_info && $setting_info['status']) {
+								$data['new_modules_5'][] = array(
+									'module'     => $this->load->controller('module/' . $part[0], $setting_info),
+									'sort_order' => $new_module['sort_order']
+								);
+
+							}
+						}
+					}
+					
+					if (!empty($data['new_modules_1'])){
+						foreach ($data['new_modules_1'] as $key => $value) {
+							$sort_new_modules_1[$key] = $value['sort_order'];
+						} 
+						array_multisort($sort_new_modules_1, SORT_ASC, $data['new_modules_1']);
+					}
+					if (!empty($data['new_modules_2'])){
+						foreach ($data['new_modules_2'] as $key => $value) {
+							$sort_new_modules_2[$key] = $value['sort_order'];
+						} 
+						array_multisort($sort_new_modules_2, SORT_ASC, $data['new_modules_2']);
+					}
+					if (!empty($data['new_modules_3'])){
+						foreach ($data['new_modules_3'] as $key => $value) {
+							$sort_new_modules_3[$key] = $value['sort_order'];
+						} 
+						array_multisort($sort_new_modules_3, SORT_ASC, $data['new_modules_3']);
+					}
+					if (!empty($data['new_modules_4'])){
+						foreach ($data['new_modules_4'] as $key => $value) {
+							$sort_new_modules_4[$key] = $value['sort_order'];
+						} 
+						array_multisort($sort_new_modules_4, SORT_ASC, $data['new_modules_4']);
+					}
+					if (!empty($data['new_modules_5'])){
+						foreach ($data['new_modules_5'] as $key => $value) {
+							$sort_new_modules_5[$key] = $value['sort_order'];
+						} 
+						array_multisort($sort_new_modules_5, SORT_ASC, $data['new_modules_5']);
+					}
+					
+				}
+				
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/column_left.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('design/layout');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['button_text'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['col_left_button_text'])) {
+					$data['button_text'] = $xds_coloring_theme['col_left_button_text'][$language_id];
+				}
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/column_right.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('design/layout');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['button_text'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['col_right_button_text'])) {
+					$data['button_text'] = $xds_coloring_theme['col_right_button_text'][$language_id];
+				}
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/search.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/search');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$data['search_text_category'] = $this->language->get('search_text_category');
+				$data['search_text_category_alt'] = $this->language->get('search_text_category');
+				
+        if (isset($this->request->get['category_id'])) {
+					$category_id = $this->request->get['category_id'];
+				} else {
+					$category_id = 0;
+				}
+				
+				$data['category_id'] = $category_id;
+				
+				$data['search_categories'] = array();
+				$search_categories_1 = $this->model_catalog_category->getCategories(0);
+				foreach ($search_categories_1 as $search_category) {
+					$data['search_categories'][] = array(
+						'category_id' => $search_category['category_id'],
+						'name'        => $search_category['name']
+					);
+				}
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/header.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/header');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$this->load->model('setting/setting');
+
+				$data['header_email_text'] = $this->language->get('header_email_text');
+				$data['header_phone_text'] = $this->language->get('header_phone_text');	
+				$data['header_address_text'] = $this->language->get('header_address_text');	
+				
+				$data['header_product_compare'] = sprintf($this->language->get('coloring_product_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));		
+
+				$data['header_product_compare_link'] = $this->url->link('product/compare');
+				
+				$data['language_id'] = $this->config->get('config_language_id');
+				$language_id = $this->config->get('config_language_id');
+
+				$xds_coloring = array();
+				$xds_coloring = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				$data['stylesheet'] = $xds_coloring;
+				
+				$data['header_menu'] = array();
+				
+				$data['header_menu_toggle'] = false;
+				
+				if (isset($xds_coloring['main_menu_toggle'])) {
+					$data['header_menu_toggle'] = $xds_coloring['main_menu_toggle'];
+				}
+				
+				if (isset($xds_coloring['main_menu_item'])) {
+					$data['header_menu'] = $xds_coloring['main_menu_item'];
+				}
+				
+				if (!empty($data['header_menu'])){
+					foreach ($data['header_menu'] as $key => $value) {
+						$sort_heder_menu[$key] = $value['sort'];
+					} 
+					array_multisort($sort_heder_menu, SORT_ASC, $data['header_menu']);
+				}
+
+				$data['help_menu_text'] = $this->language->get('header_help_support');
+				
+				if (isset($xds_coloring['help_menu_text'])) {
+					if ($xds_coloring['help_menu_text'][$language_id] != '') {
+						$data['help_menu_text'] = $xds_coloring['help_menu_text'][$language_id];
+					}
+				}
+				
+				$data['help_menu'] = array();
+				$data['help_menu_toggle'] = false;
+				$data['help_menu_left'] = '';
+				
+				if (isset($xds_coloring['help_menu_toggle'])) {
+					$data['help_menu_toggle'] = $xds_coloring['help_menu_toggle'];
+				}
+				if (isset($xds_coloring['help_menu_left']) && $xds_coloring['help_menu_left']) {
+					$data['help_menu_left'] = 'pull-left';
+				}
+				
+				if (isset($xds_coloring['help_menu_item'])) {
+					$data['help_menu'] = $xds_coloring['help_menu_item'];
+				}
+				
+				if (!empty($data['help_menu'])){
+					foreach ($data['help_menu'] as $key => $value) {
+						$sort_help_menu[$key] = $value['sort'];
+					} 
+					array_multisort($sort_help_menu, SORT_ASC, $data['help_menu']);
+				}
+				
+				
+				$data['category_mask'] = '';
+				
+				if (isset($xds_coloring['category_mask_toggle'])) {
+					$data['category_mask'] = $xds_coloring['category_mask_toggle'];
+				}
+				
+				$data['add_category_menu'] = array();
+				$data['add_category_menu_toggle'] = false;
+				
+				if (isset($xds_coloring['add_cat_links_toggle'])) {
+					$data['add_category_menu_toggle'] = $xds_coloring['add_cat_links_toggle'];
+				}
+				
+				if (isset($xds_coloring['add_cat_links_item'])) {
+					$data['add_category_menu'] = $xds_coloring['add_cat_links_item'];
+				}
+				
+				if (!empty($data['add_category_menu'])){
+					foreach ($data['add_category_menu'] as $key => $value) {
+						$sort_add_category_menu[$key] = $value['sort'];
+					} 
+					array_multisort($sort_add_category_menu, SORT_ASC, $data['add_category_menu']);
+				}
+				
+				$data['header_contacts_toggle'] = false;
+				
+				if (isset($xds_coloring['contact_main_toggle'])) {
+					$data['header_contacts_toggle'] = $xds_coloring['contact_main_toggle'];
+				}
+				
+				$data['header_add_contacts_toggle'] = false;
+				
+				if (isset($xds_coloring['contact_add_toggle'])) {
+					$data['header_add_contacts_toggle'] = $xds_coloring['contact_add_toggle'];
+				}
+
+				$data['main_telephone'] = "";
+				
+				if (isset($xds_coloring['contact_main_phone'])) {
+					$data['main_telephone'] = $xds_coloring['contact_main_phone'];
+				}
+				
+				$data['contact_hint'] = "";
+				
+				if (isset($xds_coloring['contact_hint'])) {
+					$data['contact_hint'] = $xds_coloring['contact_hint'];
+				}
+				
+				$data['contact_schedule'] = "";
+				
+				if (isset($xds_coloring['schedule'])) {
+					$data['contact_schedule'] = $xds_coloring['schedule'];
+				}
+				
+				$data['contact_email'] = "";
+				
+				if (isset($xds_coloring['contact_email'])) {
+					$data['contact_email'] = $xds_coloring['contact_email'];
+				}
+
+				$data['all_phones'] = array();
+				
+				if (isset($xds_coloring['header_contact'])) {
+					$data['all_phones'] = $xds_coloring['header_contact'];
+				}
+				
+				if (!empty($data['all_phones'])){
+					foreach ($data['all_phones'] as $key => $value) {
+						$sort_all_phones[$key] = $value['sort'];
+					} 
+					array_multisort($sort_all_phones, SORT_ASC, $data['all_phones']);
+				}
+				
+				$data['other_contacts'] = array();
+				
+				if (isset($xds_coloring['additional_contact'])) {
+					$data['other_contacts'] = $xds_coloring['additional_contact'];
+				}
+				
+				if (!empty($data['other_contacts'])){
+					foreach ($data['other_contacts'] as $key => $value) {
+						$sort_other_contacts[$key] = $value['sort'];
+					} 
+					array_multisort($sort_other_contacts, SORT_ASC, $data['other_contacts']);
+				}
+				
+				$data['user_name'] = $this->customer->getFirstName();
+				
+				$data['og_url_coloring'] = (isset($this->request->server['HTTPS']) ? HTTPS_SERVER : HTTP_SERVER) . substr($this->request->server['REQUEST_URI'], 1, (strlen($this->request->server['REQUEST_URI'])-1));
+
+      ]]></add>
+    </operation>
+		
+		<operation>
+      <search><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('coloring_text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></add>
+    </operation>
+		
+		<operation>
+      <search><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('coloring_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+		
+		<operation>
+      <search><![CDATA[
+				'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
+      ]]></search>
+      <add position="replace"><![CDATA[
+				'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' <span class="count">' . $this->model_catalog_product->getTotalProducts($filter_data) . '</span>' : ''),
+				]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				foreach ($children as $child) {
+      ]]></search>
+      <add position="after"><![CDATA[
+				$children2_data = array();
+				$children2 = $this->model_catalog_category->getCategories($child['category_id']);
+				foreach ($children2 as $child2) {
+					$filter2_data = array(
+						'filter_category_id'  => $child2['category_id'],
+						'filter_sub_category' => true
+					);
+					$children2_data[] = array(
+						'name'  => $child2['name'] . ($this->config->get('config_product_count') ? ' <span class="count">' . $this->model_catalog_product->getTotalProducts($filter2_data) . '</span>' : ''),
+						'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'].'_'. $child2['category_id'])
+					);
+				}
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$children_data[] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'category_id' => $child['category_id'],
+				'children2'    => $children2_data,
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/cart.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/cart');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['text_items'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_items_new'] = sprintf($this->language->get('coloring_text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+				
+				$data['text_items_popup'] = sprintf($this->language->get('coloring_text_items_popup'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+				
+				$data['text_popup_cart'] = $this->language->get('text_popup_cart');
+				$data['text_popup_continue'] = $this->language->get('text_popup_continue');
+				$data['text_popup_options'] = $this->language->get('text_popup_options');
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/common/footer.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/footer');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->load->model('setting/setting');
+				$this->load->model('design/banner');
+				$this->load->model('tool/image');
+
+				$data['language_id'] = $this->config->get('config_language_id');
+				
+				$data['xds_coloring_theme'] = array();
+				$data['xds_coloring_theme'] = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				$pay_icons_banner_id = -99;
+				$data['pay_icons_toggle'] = false;
+				$data['footer_map_toggle'] = false;
+				$data['footer_map'] = array();
+
+				if(!empty($xds_coloring_theme)){
+					$pay_icons_banner_id = $xds_coloring_theme['pay_icons_banner_id'];
+					$data['pay_icons_toggle'] = $xds_coloring_theme['pay_icons_toggle'];
+					$data['footer_map_toggle'] = $xds_coloring_theme['footer_map_toggle'];
+					$data['footer_map'] = $xds_coloring_theme['footer_map'];
+				}
+				
+				$data['pay_icons'] = array();
+				$pay_icons = $this->model_design_banner->getBanner($pay_icons_banner_id);
+				
+				foreach ($pay_icons as $pay_icon) {
+					if (is_file(DIR_IMAGE . $pay_icon['image'])) {
+						$data['pay_icons'][] = array(
+							'title' => $pay_icon['title'],
+							'link'  => $pay_icon['link'],
+							'image' => $this->model_tool_image->resize($pay_icon['image'], 48, 32)
+						);
+					}
+				}				
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['powered'] = sprintf($this->language->get('text_powered'), $this->config->get('config_name'), date('Y', time()));
+      ]]></search>
+      <add position="replace"><![CDATA[
+				
+				$data['powered'] = sprintf($this->language->get('text_powered'), $this->config->get('config_name'), date('Y', time())).$this->language->get('theme_powered');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/product.php">
+		<operation>
+      <search><![CDATA[
+				$data['images'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'helper_thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_thumb_width'), $this->config->get('config_image_thumb_height')),
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['images'] = array();
+      ]]></search>
+      <add position="before"><![CDATA[
+			
+				if ($product_info['image']) {
+					$data['thumb_small'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'));
+				} else {
+					$data['thumb_small'] = '';
+				}
+			
+				$data['img_small'] = $this->config->get('config_image_additional_width').'x'.$this->config->get('config_image_additional_height');
+				$data['img_big'] = $this->config->get('config_image_thumb_width').'x'.$this->config->get('config_image_thumb_height');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('catalog/category');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['short_description_off'] = '';
+				$data['short_attribute_off'] = '';
+				$data['social_likes_off'] = '';
+				$data['disable_cart_button_text'] = '';
+				$data['disable_cart_button'] = '';
+				$data['related_product_position'] = '';
+			
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['product_short_description'])) {
+					$data['short_description_off'] = $xds_coloring_theme['product_short_description'];
+				}
+				
+				if (isset($xds_coloring_theme['product_short_attributes'])) {
+					$data['short_attribute_off'] = $xds_coloring_theme['product_short_attributes'];
+				}
+				
+				if (isset($xds_coloring_theme['product_social_likes'])) {
+					$data['social_likes_off'] = $xds_coloring_theme['product_social_likes'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring_theme['disable_cart_button'];
+				}
+				
+				if (isset($xds_coloring_theme['related_product_position'])) {
+					$data['related_product_position'] = $xds_coloring_theme['related_product_position'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring_theme['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['currency_code'] = $this->currency->getCode();
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['text_select'] = $this->language->get('text_select');
+      ]]></search>
+      <add position="before"><![CDATA[
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+			
+				$this->document->addScript('catalog/view/theme/coloring/assets/share/social-likes.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/share/social-likes_birman.css');
+				
+				
+				$this->load->language('coloring/coloring');
+				
+				$data['product_short_description_text'] = $this->language->get('product_short_description_text');
+				$data['product_read_more_text'] = $this->language->get('product_read_more_text');
+				$data['product_all_specifications_text'] = $this->language->get('product_all_specifications_text');
+				$data['product_required_text'] = $this->language->get('product_required_text');
+				$data['product_share_text'] = $this->language->get('product_share_text');
+				
+				$data['product_quantity_text'] = sprintf($this->language->get('product_quantity_text'), $product_info['quantity']);
+
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="before"><![CDATA[
+			
+				$data['product_quantity'] = $product_info['quantity'];
+				$data['config_stock_display'] = $this->config->get('config_stock_display');
+				
+				if ($product_info['quantity'] <= 0) {
+					$data['product_stock'] = $product_info['stock_status'];
+				} else {
+					$data['product_stock'] = $this->language->get('text_instock');
+				}
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/category.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('product/category');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['categories'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'image' => $this->model_tool_image->resize($result['image'], 120, 120),
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['subcategory_left'] = '';
+				$data['disable_cart_button_text'] = '';
+				$data['disable_cart_button'] = '';
+				$data['description_position'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['left_subcategory'])) {
+					$data['subcategory_left'] = $xds_coloring_theme['left_subcategory'];
+				}
+				
+				if (isset($xds_coloring_theme['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring_theme['disable_cart_button'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring_theme['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring_theme['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring_theme['on_off_qview'];
+				}
+
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+				if (isset($xds_coloring_theme['category_description_position'])) {
+					$data['description_position'] = $xds_coloring_theme['category_description_position'];
+				}
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'href'  => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '&sort=p.model&order=DESC' . $url)
+      ]]></search>
+      <add position="after" offset="1"><![CDATA[
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_asc'),
+					'value' => 'p.quantity-ASC',
+					'href'  => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '&sort=p.quantity&order=ASC' . $url)
+				);
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_desc'),
+					'value' => 'p.quantity-DESC',
+					'href'  => $this->url->link('product/category', 'path=' . $this->request->get['path'] . '&sort=p.quantity&order=DESC' . $url)
+				);
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/search.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('product/search');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['disable_cart_button_text'] = '';
+				$data['disable_cart_button'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring_theme['disable_cart_button'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring_theme['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring_theme['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring_theme['on_off_qview'];
+				}
+
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'href'  => $this->url->link('product/search', 'sort=p.model&order=DESC' . $url)
+      ]]></search>
+      <add position="after" offset="1"><![CDATA[
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_asc'),
+					'value' => 'p.quantity-ASC',
+					'href'  => $this->url->link('product/search', '&sort=p.quantity&order=ASC' . $url)
+				);
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_desc'),
+					'value' => 'p.quantity-DESC',
+					'href'  => $this->url->link('product/search', '&sort=p.quantity&order=DESC' . $url)
+				);
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/special.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('product/special');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['disable_cart_button_text'] = '';
+				$data['disable_cart_button'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring_theme['disable_cart_button'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring_theme['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring_theme['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring_theme['on_off_qview'];
+				}
+
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'href'  => $this->url->link('product/special', 'sort=p.model&order=DESC' . $url)
+      ]]></search>
+      <add position="after" offset="1"><![CDATA[
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_asc'),
+					'value' => 'p.quantity-ASC',
+					'href'  => $this->url->link('product/special', '&sort=p.quantity&order=ASC' . $url)
+				);
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_desc'),
+					'value' => 'p.quantity-DESC',
+					'href'  => $this->url->link('product/special', '&sort=p.quantity&order=DESC' . $url)
+				);
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/manufacturer.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('product/manufacturer');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				
+				$language_id = $this->config->get('config_language_id');
+				
+				$data['disable_cart_button_text'] = '';
+				$data['disable_cart_button'] = '';
+				
+				$xds_coloring_theme = array();
+				$xds_coloring_theme = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				
+				if (isset($xds_coloring_theme['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring_theme['disable_cart_button'];
+				}
+
+				if (isset($xds_coloring_theme['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring_theme['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring_theme['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring_theme['on_off_qview'];
+				}
+
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				'href'  => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $this->request->get['manufacturer_id'] . '&sort=p.model&order=DESC' . $url)
+      ]]></search>
+      <add position="after" offset="1"><![CDATA[
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_asc'),
+					'value' => 'p.quantity-ASC',
+					'href'  => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $this->request->get['manufacturer_id'] . '&sort=p.quantity&order=ASC' . $url)
+				);
+				$data['sorts'][] = array(
+					'text'  => $this->language->get('text_quantity_desc'),
+					'value' => 'p.quantity-DESC',
+					'href'  => $this->url->link('product/manufacturer/info', 'manufacturer_id=' . $this->request->get['manufacturer_id'] . '&sort=p.quantity&order=DESC' . $url)
+				);
+      ]]></add>
+    </operation>
+  </file>
+	
+  <file path="catalog/controller/product/compare.php">
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_product_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/module/carousel.php">
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$data['alt_text'] = $setting['name'];
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/slideshow.php">
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/coloring/assets/nivo-slider/nivo-slider.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/coloring/assets/nivo-slider/jquery.nivo.slider.pack.js');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/featured.php">
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $product_info['quantity'],
+				'qview'     => 'index.php?route=product/xds_qview&product_id=' . $product_info['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $this->language->get('heading_title');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				$xds_coloring = array();
+				$xds_coloring = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				$language_id = $this->config->get('config_language_id');
+				$data['disable_cart_button'] = false;
+				if (isset($xds_coloring['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring['disable_cart_button'];
+				}
+				$data['disable_cart_button_text'] = "";
+				if (isset($xds_coloring['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring['on_off_qview'];
+				}
+				
+				$this->load->language('coloring/coloring');
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/latest.php">
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $this->language->get('heading_title');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				$xds_coloring = array();
+				$xds_coloring = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				$language_id = $this->config->get('config_language_id');
+				$data['disable_cart_button'] = false;
+				if (isset($xds_coloring['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring['disable_cart_button'];
+				}
+				$data['disable_cart_button_text'] = "";
+				if (isset($xds_coloring['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring['on_off_qview'];
+				}
+				
+				$this->load->language('coloring/coloring');
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/special.php">
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $this->language->get('heading_title');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				$xds_coloring = array();
+				$xds_coloring = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				$language_id = $this->config->get('config_language_id');
+				$data['disable_cart_button'] = false;
+				if (isset($xds_coloring['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring['disable_cart_button'];
+				}
+				$data['disable_cart_button_text'] = "";
+				if (isset($xds_coloring['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring['on_off_qview'];
+				}
+				
+				$this->load->language('coloring/coloring');
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/bestseller.php">
+		<operation>
+      <search><![CDATA[
+				$data['products'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'quantity'  => $result['quantity'],
+				'qview'        => 'index.php?route=product/xds_qview&product_id=' . $result['product_id'],
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $this->language->get('heading_title');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('setting/setting');
+				$xds_coloring = array();
+				$xds_coloring = $this->model_setting_setting->getSetting('xds_coloring_theme');
+				$language_id = $this->config->get('config_language_id');
+				$data['disable_cart_button'] = false;
+				if (isset($xds_coloring['disable_cart_button'])) {
+					$data['disable_cart_button'] = $xds_coloring['disable_cart_button'];
+				}
+				$data['disable_cart_button_text'] = "";
+				if (isset($xds_coloring['disable_cart_button_text'])) {
+					$data['disable_cart_button_text'] = $xds_coloring['disable_cart_button_text'][$language_id];
+				}
+				
+				$data['on_off_qview'] = false;
+				if (isset($xds_coloring['on_off_qview'])) {
+					$data['on_off_qview'] = $xds_coloring['on_off_qview'];
+				}
+				
+				$this->load->language('coloring/coloring');
+				$data['qview_text'] = $this->language->get('qview_text');
+				
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
+				$this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+				$this->document->addStyle('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/banner.php">
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.transitions.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.transitions.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/filter.php">
+		<operation>
+      <search><![CDATA[
+				'name'      => $filter['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : '')
+      ]]></search>
+      <add position="replace"><![CDATA[
+				'name'      => $filter['name'],
+				'total' => $this->config->get('config_product_count') ? '' . $this->model_catalog_product->getTotalProducts($filter_data) . '' : ''
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/account/wishlist.php">
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_text_wishlist'), $this->model_account_wishlist->getTotalWishlist());
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/account/account.php">
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $this->language->get('heading_title');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$this->load->model('account/order');
+				
+				$data['user_name'] = $this->customer->getFirstName().' '.$this->customer->getLastName();
+				$data['user_balance'] = $this->currency->format($this->customer->getBalance());
+				$data['user_points'] = (int)$this->customer->getRewardPoints();
+				$data['user_order_total'] = $this->model_account_order->getTotalOrders();
+				
+				$this->load->model('account/wishlist');
+				$data['user_wishlist_total'] = $this->model_account_wishlist->getTotalWishlist();
+				
+				$data['text_user_balance'] = $this->language->get('text_user_balance');
+				$data['text_user_points'] = $this->language->get('text_user_points');
+				$data['text_user_order_total'] = $this->language->get('text_user_order_total');
+				$data['text_user_wishlist_total'] = $this->language->get('text_user_wishlist_total');
+				
+				$data['logout'] = $this->url->link('account/logout', '', 'SSL');
+				$data['text_logout'] = $this->language->get('text_logout');
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/checkout/cart.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('checkout/cart');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$json['total_new'] = sprintf($this->language->get('coloring_text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				public function edit() {
+      ]]></search>
+      <add position="before"><![CDATA[
+				public function editPopup() {
+					$this->load->language('checkout/cart');
+					$this->load->language('coloring/coloring');
+					$this->load->model('tool/image');
+
+					$json = array();
+
+					// Update
+					if (isset($this->request->post['quantity']) && isset($this->request->post['key'])) {
+	
+						$this->cart->update($this->request->post['key'], $this->request->post['quantity']);
+
+						unset($this->session->data['shipping_method']);
+						unset($this->session->data['shipping_methods']);
+						unset($this->session->data['payment_method']);
+						unset($this->session->data['payment_methods']);
+						unset($this->session->data['reward']);
+
+						// Totals
+						$this->load->model('extension/extension');
+
+						$total_data = array();
+						$total = 0;
+						$taxes = $this->cart->getTaxes();
+
+						// Display prices
+						if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
+							$sort_order = array();
+
+							$results = $this->model_extension_extension->getExtensions('total');
+
+							foreach ($results as $key => $value) {
+								$sort_order[$key] = $this->config->get($value['code'] . '_sort_order');
+							}
+
+							array_multisort($sort_order, SORT_ASC, $results);
+
+							foreach ($results as $result) {
+								if ($this->config->get($result['code'] . '_status')) {
+									$this->load->model('total/' . $result['code']);
+
+									$this->{'model_total_' . $result['code']}->getTotal($total_data, $total, $taxes);
+								}
+							}
+
+							$sort_order = array();
+
+							foreach ($total_data as $key => $value) {
+								$sort_order[$key] = $value['sort_order'];
+							}
+
+							array_multisort($sort_order, SORT_ASC, $total_data);
+						}
+
+						$json['total_new'] = sprintf($this->language->get('coloring_text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+					}
+
+					$this->response->addHeader('Content-Type: application/json');
+					$this->response->setOutput(json_encode($json));
+				}
+      ]]></add>
+    </operation>
+	</file>
+	
+</modification>

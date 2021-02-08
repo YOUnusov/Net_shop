@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>Coloring Theme Modification</name>
+	<code>coloring</code>
+  <version>1.2.3</version>
+  <author>xds</author>
+  <link>http://xds.by</link>
+	
+	<file path="catalog/controller/common/home.php">
+		<operation>
+      <search><![CDATA[
+				$data['header'] = $this->load->controller('common/header');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->model('design/banner');
+				$this->load->model('tool/image');
+				$this->load->model('coloring/coloring');
+			
+				$home_bottom_carousel = array();
+				$home_bottom_carousel = $this->model_coloring_coloring->getXmodule('carousel', 'home-bottom-carousel');
+				
+				$data['hbc_banners'] = array();
+
+				if (!empty($home_bottom_carousel)) {
+				$results = $this->model_design_banner->getBanner($home_bottom_carousel['banner_id']);
+				
+				foreach ($results as $result) {
+					if (is_file(DIR_IMAGE . $result['image'])) {
+						$data['hbc_banners'][] = array(
+							'title' => $result['title'],
+							'link'  => $result['link'],
+							'image' => $this->model_tool_image->resize($result['image'], $home_bottom_carousel['width'], $home_bottom_carousel['height'])
+						);
+					}
+				}
+				}
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/product.php">
+		<operation>
+      <search><![CDATA[
+				$data['images'][] = array(
+      ]]></search>
+      <add position="after"><![CDATA[
+				'helper_thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_thumb_width'), $this->config->get('config_image_thumb_height')),
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['images'] = array();
+      ]]></search>
+      <add position="before"><![CDATA[
+			
+				if ($product_info['image']) {
+					$data['thumb_small'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'));
+				} else {
+					$data['thumb_small'] = '';
+				}
+			
+				$data['img_small'] = $this->config->get('config_image_additional_width').'x'.$this->config->get('config_image_additional_height');
+				$data['img_big'] = $this->config->get('config_image_thumb_width').'x'.$this->config->get('config_image_thumb_height');
+      ]]></add>
+    </operation>
+  </file>
+	
+	
+	<file path="catalog/controller/product/category.php">
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+  </file>
+	<file path="catalog/controller/product/search.php">
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+  </file>
+	<file path="catalog/controller/product/special.php">
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+  </file>
+	<file path="catalog/controller/product/manufacturer.php">
+		<operation>
+      <search><![CDATA[
+				'rating'      => $result['rating'],
+      ]]></search>
+      <add position="after"><![CDATA[
+				'reviews'      => $result['reviews'],
+      ]]></add>
+    </operation>
+  </file>
+	
+  <file path="catalog/controller/module/carousel.php">
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$data['alt_text'] = $setting['name'];
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/slideshow.php">
+		<operation>
+      <search><![CDATA[
+				$this->document->addStyle('catalog/view/javascript/jquery/owl-carousel/owl.carousel.css');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addStyle('catalog/view/theme/coloring/assets/nivo-slider/nivo-slider.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$this->document->addScript('catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js');
+      ]]></search>
+      <add position="replace"><![CDATA[
+        $this->document->addScript('catalog/view/theme/coloring/assets/nivo-slider/jquery.nivo.slider.pack.js');
+      ]]></add>
+    </operation>
+  </file>
+	
+	 <file path="catalog/controller/module/featured.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				static $module = 0;
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				if (file_exists(DIR_TEMPLATE
+      ]]></search>
+      <add position="before"><![CDATA[
+				$data['module'] = $module++;
+      ]]></add>
+    </operation>
+  </file>
+	
+	 <file path="catalog/controller/module/latest.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				static $module = 0;
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				if (file_exists(DIR_TEMPLATE
+      ]]></search>
+      <add position="before"><![CDATA[
+				$data['module'] = $module++;
+      ]]></add>
+    </operation>
+  </file>
+	
+	 <file path="catalog/controller/module/special.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				static $module = 0;
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				if (file_exists(DIR_TEMPLATE
+      ]]></search>
+      <add position="before"><![CDATA[
+				$data['module'] = $module++;
+      ]]></add>
+    </operation>
+  </file>
+	
+	 <file path="catalog/controller/module/bestseller.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="after"><![CDATA[
+				static $module = 0;
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				if (file_exists(DIR_TEMPLATE
+      ]]></search>
+      <add position="before"><![CDATA[
+				$data['module'] = $module++;
+      ]]></add>
+    </operation>
+  </file>
+	
+	
+	
+	
+	
+	
+	<file path="catalog/controller/common/search.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/search');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$data['search_text_category'] = $this->language->get('search_text_category');
+				
+        if (isset($this->request->get['category_id'])) {
+					$category_id = $this->request->get['category_id'];
+				} else {
+					$category_id = 0;
+				}
+				
+				$data['category_id'] = $category_id;
+				
+				$data['search_categories'] = array();
+				$search_categories_1 = $this->model_catalog_category->getCategories(0);
+				foreach ($search_categories_1 as $search_category) {
+					$data['search_categories'][] = array(
+						'category_id' => $search_category['category_id'],
+						'name'        => $search_category['name']
+					);
+				}
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/common/header.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/header');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$data['header_help_support'] = $this->language->get('header_help_support');
+				$data['header_email_text'] = $this->language->get('header_email_text');
+				$data['header_phone_text'] = $this->language->get('header_phone_text');	
+				$data['header_address_text'] = $this->language->get('header_address_text');	
+				
+				$data['header_product_compare'] = sprintf($this->language->get('coloring_product_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));		
+
+				$data['header_product_compare_link'] = $this->url->link('product/compare');
+				
+				$this->load->model('coloring/coloring');
+				$data['language_id'] = $this->config->get('config_language_id');
+				
+				$data['header_menu'] = array();
+				$data['header_menu'] = $this->model_coloring_coloring->getXmodule('xds_coloring_header_menu', 'header-menu');
+				
+				if (!empty($data['header_menu']['cust_menu_item'])){
+					foreach ($data['header_menu']['cust_menu_item'] as $key => $value) {
+						$sort_heder_menu[$key] = $value['sort'];
+					} 
+					array_multisort($sort_heder_menu, SORT_ASC, $data['header_menu']['cust_menu_item']);
+				}
+				
+				
+				$data['help_menu'] = array();
+				$data['help_menu'] = $this->model_coloring_coloring->getXmodule('xds_coloring_header_menu', 'help-menu');
+				
+				if (!empty($data['help_menu']['cust_menu_item'])){
+					foreach ($data['help_menu']['cust_menu_item'] as $key => $value) {
+						$sort_help_menu[$key] = $value['sort'];
+					} 
+					array_multisort($sort_help_menu, SORT_ASC, $data['help_menu']['cust_menu_item']);
+				}
+      ]]></add>
+    </operation>
+		<operation>
+      <search><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$data['text_wishlist'] = sprintf($this->language->get('coloring_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/account/wishlist.php">
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_text_wishlist'), (isset($this->session->data['wishlist']) ? count($this->session->data['wishlist']) : 0));
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/product/compare.php">
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_product_compare'), (isset($this->session->data['compare']) ? count($this->session->data['compare']) : 0));
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/common/cart.php">
+		<operation>
+      <search><![CDATA[
+				$data['text_items'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$data['text_items'] = sprintf($this->language->get('coloring_text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></add>
+    </operation>
+	</file>
+	
+	<file path="catalog/controller/checkout/cart.php">
+		<operation>
+      <search><![CDATA[
+				$json['total'] = sprintf($this->language->get('text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				$json['total'] = sprintf($this->language->get('coloring_text_items'), $this->cart->countProducts() + (isset($this->session->data['vouchers']) ? count($this->session->data['vouchers']) : 0), $this->currency->format($total));
+      ]]></add>
+    </operation>
+	</file>
+	
+	
+	<file path="catalog/controller/common/footer.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->language('common/footer');
+      ]]></search>
+      <add position="after"><![CDATA[
+				$this->load->language('coloring/coloring');
+				
+				$this->load->model('coloring/coloring');
+				$this->load->model('design/banner');
+				$this->load->model('tool/image');
+				
+				$data[''] = $this->language->get('');
+				
+				$data['language_id'] = $this->config->get('config_language_id');
+				
+				$data['footer_map'] = array();
+				$data['footer_map'] = $this->model_coloring_coloring->getXmodule('html', 'footer-map');
+				
+				$pay_icons_banner_id = $this->model_coloring_coloring->getXbanner('footer-pay-icons');
+				$pay_icons = $this->model_design_banner->getBanner($pay_icons_banner_id);
+				
+				$data['pay_icons'] = array();
+				
+				foreach ($pay_icons as $pay_icon) {
+					if (is_file(DIR_IMAGE . $pay_icon['image'])) {
+						$data['pay_icons'][] = array(
+							'title' => $pay_icon['title'],
+							'link'  => $pay_icon['link'],
+							'image' => $this->model_tool_image->resize($pay_icon['image'], 48, 32)
+						);
+					}
+				}
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/view/theme/coloring/template/common/footer.tpl">
+		<operation>
+      <search><![CDATA[
+				</body>
+      ]]></search>
+      <add position="before"><![CDATA[
+				<script>
+					$(document).ready(function(){$('.powered').append('. Дизайн - <a target="_blank" href="http://xds.by">XDS</a>');});
+				</script>
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/product.php">
+		<operation>
+      <search><![CDATA[
+				$this->load->model('tool/image');
+      ]]></search>
+      <add position="before"><![CDATA[
+			
+				$data['product_quantity'] = $product_info['quantity'];
+				$data['config_stock_display'] = $this->config->get('config_stock_display');
+				
+				if ($product_info['quantity'] <= 0) {
+					$data['product_stock'] = $product_info['stock_status'];
+				} else {
+					$data['product_stock'] = $this->language->get('text_instock');
+				}
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/product/product.php">
+		<operation>
+      <search><![CDATA[
+				$data['heading_title'] = $product_info['name'];
+      ]]></search>
+      <add position="before"><![CDATA[
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.css');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/owl-carousel/owl.theme.css');
+				$this->document->addScript('catalog/view/theme/coloring/assets/owl-carousel/owl.carousel.min.js');
+			
+				$this->document->addScript('catalog/view/theme/coloring/assets/share/social-likes.min.js');
+				$this->document->addStyle('catalog/view/theme/coloring/assets/share/social-likes_birman.css');
+				
+				
+				$this->load->language('coloring/coloring');
+				
+				$data['product_short_description_text'] = $this->language->get('product_short_description_text');
+				$data['product_read_more_text'] = $this->language->get('product_read_more_text');
+				$data['product_all_specifications_text'] = $this->language->get('product_all_specifications_text');
+				$data['product_required_text'] = $this->language->get('product_required_text');
+				$data['product_share_text'] = $this->language->get('product_share_text');
+				
+				$data['product_quantity_text'] = sprintf($this->language->get('product_quantity_text'), $product_info['quantity']);
+				
+				
+				
+				
+      ]]></add>
+    </operation>
+  </file>
+	
+	<file path="catalog/controller/module/filter.php">
+		<operation>
+      <search><![CDATA[
+				'name'      => $filter['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : '')
+      ]]></search>
+      <add position="replace"><![CDATA[
+				'name'      => $filter['name'],
+				'total' => $this->config->get('config_product_count') ? '' . $this->model_catalog_product->getTotalProducts($filter_data) . '' : ''
+      ]]></add>
+    </operation>
+  </file>
+	
+</modification>
